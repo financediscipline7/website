@@ -49,3 +49,36 @@ No environment variables are required in Phase 1. `.env.example` documents the i
 ## Future phases
 
 Blog detail experiences, video integrations, newsletter capture, interactive tools, analytics, authentication, community, and monetization are intentionally not implemented yet. The route and content foundations are ready for those phases.
+
+
+# Finance Discipline Copilot Context Pack
+
+-   `.github/copilot-instructions.md` --- primary Copilot CLI
+    instructions
+-   `docs/AI-CONTEXT.md` --- product/brand context
+-   `docs/DESIGN-SYSTEM.md` --- visual system and UI rules
+-   `docs/WEBSITE-ARCHITECTURE.md` --- routes, architecture and change
+    safety
+-   `docs/reference/` --- current visual screenshots
+
+Recommended final repository structure:
+
+``` text
+.github/
+  copilot-instructions.md
+
+docs/
+  AI-CONTEXT.md
+  DESIGN-SYSTEM.md
+  WEBSITE-ARCHITECTURE.md
+  reference/
+    homepage.png
+    article-compound-interest.png
+    money-mistakes.png
+    wealth-building.png
+    psychology.png
+```
+
+For Copilot CLI, keep `.github/copilot-instructions.md` committed to the
+repository so future coding sessions have the same design, architecture,
+finance-content, accessibility, SEO and brand constraints.
