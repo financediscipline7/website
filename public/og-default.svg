@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#020817"/>
+  <path d="M0 500h1200" stroke="#00d9d9" stroke-opacity=".25"/>
+  <circle cx="1040" cy="145" r="210" fill="#00d9d9" fill-opacity=".08"/>
+  <text x="92" y="230" fill="#00d9d9" font-family="Arial,sans-serif" font-size="25" letter-spacing="7">MONEY HABITS / BEHAVIORAL FINANCE</text>
+  <text x="88" y="350" fill="#fff" font-family="Georgia,serif" font-size="76" font-weight="700">Finance Discipline</text>
+  <text x="94" y="415" fill="#b7c4c7" font-family="Arial,sans-serif" font-size="30">Understand your mind. Master your money.</text>
+</svg>

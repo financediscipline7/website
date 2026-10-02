@@ -1,6 +1,7 @@
 import { ArrowRight, Brain, ChartNoAxesCombined, CircleDollarSign, FlaskConical, Play, Target } from 'lucide-react'
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import { Link, Route, Routes } from 'react-router-dom'
 import { ArticleCard } from './components/common/ArticleCard'
+import { SEOHead } from './components/common/SEOHead'
 import { SiteFooter } from './components/layout/SiteFooter'
 import { SiteHeader } from './components/layout/SiteHeader'
 import { AboutPage } from './components/pages/AboutPage'
@@ -32,6 +33,6 @@ function HomePage() {
 function PlaceholderPage({ title }: { title: string }) { return <main className="placeholder-page"><p className="kicker">Finance Discipline</p><h1>{title}</h1><p>This part of the journal is taking shape. Check back soon for stories, tools, and experiments.</p><Link className="button button--primary" to="/">Return home <ArrowRight size={16} /></Link></main> }
 function BlogPage() { return <main className="content-page"><p className="kicker">The journal</p><h1>Stories for the<br /><em>long game.</em></h1><div className="story-grid">{articles.map((article) => <ArticleCard key={article.id} article={article} />)}</div></main> }
 
-function App() { return <BrowserRouter><SiteHeader /><Routes><Route path="/" element={<main><HomePage /></main>} /><Route path="/blog" element={<BlogPage />} /><Route path="/blog/:slug" element={<ArticleDetailPage />} /><Route path="/psychology" element={<CategoryPage />} /><Route path="/wealth-building" element={<CategoryPage />} /><Route path="/money-mistakes" element={<CategoryPage />} /><Route path="/experiments" element={<CategoryPage />} /><Route path="/tools" element={<ToolsPage />} /><Route path="/tools/:id" element={<PlaceholderPage title="Tool experience coming soon." />} /><Route path="/about" element={<AboutPage />} /><Route path="/newsletter" element={<NewsletterPage />} /><Route path="/privacy" element={<LegalPage type="privacy" />} /><Route path="/terms" element={<LegalPage type="terms" />} /><Route path="/disclaimer" element={<LegalPage type="disclaimer" />} /><Route path="*" element={<PlaceholderPage title="Page not found." />} /></Routes><SiteFooter /></BrowserRouter> }
+function App() { return <><SEOHead /><SiteHeader /><Routes><Route path="/" element={<main><HomePage /></main>} /><Route path="/blog" element={<BlogPage />} /><Route path="/blog/:slug" element={<ArticleDetailPage />} /><Route path="/psychology" element={<CategoryPage />} /><Route path="/wealth-building" element={<CategoryPage />} /><Route path="/money-mistakes" element={<CategoryPage />} /><Route path="/experiments" element={<CategoryPage />} /><Route path="/tools" element={<ToolsPage />} /><Route path="/tools/:id" element={<PlaceholderPage title="Tool experience coming soon." />} /><Route path="/about" element={<AboutPage />} /><Route path="/newsletter" element={<NewsletterPage />} /><Route path="/contact" element={<PlaceholderPage title="Contact Finance Discipline" />} /><Route path="/privacy" element={<LegalPage type="privacy" />} /><Route path="/terms" element={<LegalPage type="terms" />} /><Route path="/disclaimer" element={<LegalPage type="disclaimer" />} /><Route path="*" element={<PlaceholderPage title="Page not found." />} /></Routes><SiteFooter /></> }
 
 export default App

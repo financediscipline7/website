@@ -1,7 +1,7 @@
 import { ArrowRight, BarChart3, BrainCog, TrendingUp, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const tools = [
+export const tools = [
   {
     id: 'bias-detector',
     title: 'Behavioral Bias Detector',
