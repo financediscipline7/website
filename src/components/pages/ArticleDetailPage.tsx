@@ -1,8 +1,14 @@
 import { ArrowRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { articles } from '../../data/articles'
 import type { ArticleContentBlock } from '../../types/content'
 import { ArticleCard } from '../common/ArticleCard'
+
+function getHeadingId(text: string, index: number) {
+  const slug = text.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-')
+  return `section-${slug}-${index}`
+}
 
 function renderContentBlock(block: ArticleContentBlock, index: number) {
   switch (block.type) {
@@ -10,7 +16,7 @@ function renderContentBlock(block: ArticleContentBlock, index: number) {
       return <p key={index}>{block.text}</p>
     case 'heading': {
       const Heading = `h${block.level}` as const
-      return <Heading key={index}>{block.text}</Heading>
+      return <Heading id={getHeadingId(block.text, index)} key={index}>{block.text}</Heading>
     }
     case 'list': {
       const List = block.ordered ? 'ol' : 'ul'
@@ -54,6 +60,22 @@ function renderContentBlock(block: ArticleContentBlock, index: number) {
 export function ArticleDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const article = articles.find((a) => a.slug === slug)
+  const [readingProgress, setReadingProgress] = useState(0)
+  const [copyStatus, setCopyStatus] = useState('')
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight
+      setReadingProgress(scrollable > 0 ? Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100)) : 0)
+    }
+    updateProgress()
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    window.addEventListener('resize', updateProgress)
+    return () => {
+      window.removeEventListener('scroll', updateProgress)
+      window.removeEventListener('resize', updateProgress)
+    }
+  }, [slug])
 
   if (!article) {
     return (
@@ -76,9 +98,31 @@ export function ArticleDetailPage() {
   const categoryName = article.category === 'wealth-building'
     ? 'Wealth building'
     : article.category.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join(' ')
+  const contentBlocks = Array.isArray(article.content) ? article.content : []
+  const contents = contentBlocks.flatMap((block, index) => block.type === 'heading'
+    ? [{ id: getHeadingId(block.text, index), text: block.text }]
+    : [])
+  const hasVideo = article.youtubeVideoId && /^[\w-]{11}$/.test(article.youtubeVideoId)
+  const videoUrl = hasVideo
+    ? `https://www.youtube.com/watch?v=${article.youtubeVideoId}`
+    : (import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@REPLACE_WITH_CHANNEL')
+  const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://website-orpin-mu-94.vercel.app').replace(/\/+$/, '')
+  const shareUrl = encodeURIComponent(`${siteUrl}/blog/${article.slug}`)
+
+  const copyArticleLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${siteUrl}/blog/${article.slug}`)
+      setCopyStatus('Link copied')
+    } catch {
+      setCopyStatus('Could not copy link; use your browser address bar.')
+    }
+  }
 
   return (
     <main className="article-page">
+      <div className="article-progress" role="progressbar" aria-label="Article reading progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(readingProgress)}>
+        <span style={{ width: `${readingProgress}%` }} />
+      </div>
       {/* Dark Hero Section */}
       <section className="article-hero">
         <div className="site-header__inner" style={{ maxWidth: 'var(--max-width)' }}>
@@ -92,14 +136,38 @@ export function ArticleDetailPage() {
 
       {/* Light Reading Area */}
       <article className="article-content">
+        {contents.length > 0 && (
+          <nav className="article-toc" aria-label="Table of contents">
+            <h2>In this article</h2>
+            <ol>{contents.map(({ id, text }) => <li key={id}><a href={`#${id}`}>{text}</a></li>)}</ol>
+          </nav>
+        )}
         {typeof article.content === 'string'
           ? <p>{article.content}</p>
           : article.content.map(renderContentBlock)}
+        <div className="article-share" aria-label="Share this article">
+          <span>Share this story</span>
+          <a href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`} target="_blank" rel="noreferrer">Facebook</a>
+          <a href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(article.title)}`} target="_blank" rel="noreferrer">X</a>
+          <button type="button" onClick={copyArticleLink}>Copy link</button>
+          {copyStatus && <span role="status">{copyStatus}</span>}
+        </div>
         <aside className="insight-block article-takeaway">
           <h4>Key takeaway</h4>
           <p>{article.keyTakeaway}</p>
         </aside>
       </article>
+
+      <section className="article-video">
+        <div className="site-header__inner" style={{ maxWidth: 'var(--article-width)' }}>
+          <p className="kicker">Watch on YouTube</p>
+          <h2>Take the ideas further</h2>
+          {hasVideo
+            ? <div className="article-video__frame"><iframe src={`https://www.youtube-nocookie.com/embed/${article.youtubeVideoId}`} title={`Related video: ${article.title}`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div>
+            : <p className="video-placeholder">Add this article’s YouTube video ID in <code>src/data/articles.ts</code> to enable its embed.</p>}
+          <a className="button button--primary" href={videoUrl} target="_blank" rel="noreferrer">Watch on YouTube <ArrowRight size={16} /></a>
+        </div>
+      </section>
 
       {/* Dark Final CTA / Insight Section */}
       <section className="newsletter-band" style={{ marginTop: '80px' }}>

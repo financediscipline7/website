@@ -1,6 +1,7 @@
 import type { Article, ArticleContentBlock } from '../types/content'
 
 const author = { id: 'fd-editorial', name: 'Finance Discipline', role: 'Editorial team' }
+const videoIdPlaceholder = 'REPLACE_WITH_VIDEO_ID'
 
 const budgetingContent: ArticleContentBlock[] = [
   {
@@ -545,6 +546,7 @@ export const articles: Article[] = [
     tags: ['Budgeting', 'Salary', 'Savings'],
     publishedAt: '2026-10-01',
     author,
+    youtubeVideoId: videoIdPlaceholder,
     readingTime: 9,
     content: budgetingContent,
     keyTakeaway: 'Use the percentages as a flexible starting point, and give every dollar an intentional purpose.',
@@ -564,6 +566,7 @@ export const articles: Article[] = [
     tags: ['Compound interest', 'Present bias', 'Long-term investing'],
     publishedAt: '2026-08-18',
     author,
+    youtubeVideoId: videoIdPlaceholder,
     readingTime: 8,
     content: compoundInterestContent,
     keyTakeaway: 'Compounding is gradual, uncertain in real investments, and easier to stick with when your goal and contribution habit are visible.',
@@ -583,6 +586,7 @@ export const articles: Article[] = [
     tags: ['Loss aversion', 'Market volatility', 'Investor behavior'],
     publishedAt: '2026-08-11',
     author,
+    youtubeVideoId: videoIdPlaceholder,
     readingTime: 8,
     content: panicSellingContent,
     keyTakeaway: 'Separate a genuine change in your goals or cash needs from the stress of seeing a falling balance, and use a plan made before the pressure.',
@@ -602,6 +606,7 @@ export const articles: Article[] = [
     tags: ['Lifestyle inflation', 'Salary increase', 'Personal budgeting'],
     publishedAt: '2026-08-04',
     author,
+    youtubeVideoId: videoIdPlaceholder,
     readingTime: 7,
     content: raiseDisappearsContent,
     keyTakeaway: 'Plan from the actual take-home increase and decide in advance how much to save, repay, invest, and enjoy.',

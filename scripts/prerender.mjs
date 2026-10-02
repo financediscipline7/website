@@ -15,7 +15,7 @@ try {
   const [{ default: App }, { articles }, { tools }, { HelmetProvider }] = await Promise.all([
     vite.ssrLoadModule('/src/App.tsx'),
     vite.ssrLoadModule('/src/data/articles.ts'),
-    vite.ssrLoadModule('/src/components/pages/ToolsPage.tsx'),
+    vite.ssrLoadModule('/src/data/tools.ts'),
     vite.ssrLoadModule('react-helmet-async'),
   ])
   const routes = [

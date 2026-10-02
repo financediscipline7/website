@@ -12,7 +12,11 @@ const categoryNames: Record<Article['category'], string> = {
 export function ArticleCard({ article, featured = false, variant = 'dark' }: { article: Article; featured?: boolean; variant?: 'dark' | 'light' }) {
   return (
     <article className={`article-card ${featured ? 'article-card--featured' : ''} ${variant === 'light' ? 'light-variant' : ''}`}>
-      <div className="article-art" aria-hidden="true"><span>{featured ? '01' : article.category === 'psychology' ? 'Ψ' : '↗'}</span></div>
+      {article.featuredImage ? (
+        <img className="article-card__thumbnail" src={article.featuredImage} alt={`Thumbnail for ${article.title}`} width="1200" height="630" loading="lazy" />
+      ) : (
+        <img className="article-card__thumbnail" src="/og-default.svg" alt="" width="1200" height="630" loading="lazy" />
+      )}
       <div className="article-card__body">
         <p className="eyebrow">{categoryNames[article.category]} <span>/</span> {article.readingTime} min read</p>
         <h3><Link to={`/blog/${article.slug}`}>{article.title}</Link></h3>

@@ -4,11 +4,12 @@ import { articles } from '../../data/articles'
 
 const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://website-orpin-mu-94.vercel.app').replace(/\/+$/, '')
 const defaultImage = `${siteUrl}/og-default.svg`
+const youtubeChannelUrl = import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@REPLACE_WITH_CHANNEL'
 
 const pageMetadata: Record<string, { title: string; description: string }> = {
   '/': {
     title: 'Finance Discipline | Money Habits & Psychology',
-    description: 'Build better money habits with behavioral finance, practical budgeting ideas, and psychology-backed strategies for saving, investing, and making intentional financial decisions.',
+    description: 'Build better money habits with behavioral finance and psychology-backed strategies for budgeting, saving, investing, and making intentional financial decisions.',
   },
   '/blog': {
     title: 'Personal Finance & Money Psychology Articles | Finance Discipline',
@@ -125,7 +126,7 @@ export function SEOHead() {
               name: 'Finance Discipline',
               url: siteUrl,
               logo: `${siteUrl}/favicon.svg`,
-              sameAs: ['https://www.youtube.com/@REPLACE_WITH_CHANNEL'],
+              sameAs: [youtubeChannelUrl],
             },
             {
               '@type': 'WebSite',
@@ -152,6 +153,7 @@ export function SEOHead() {
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={image} />
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={canonicalUrl} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
