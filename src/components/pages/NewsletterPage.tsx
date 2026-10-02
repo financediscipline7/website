@@ -164,7 +164,7 @@ export function NewsletterPage() {
                 Subscribe <ArrowRight size={16} />
               </button>
             </form>
-            {showSuccess && <p style={{ marginTop: '12px', color: 'var(--primary-cyan)' }}>Thanks for subscribing.</p>}
+            {submitted && <p style={{ marginTop: '12px', color: 'var(--primary-cyan)' }}>Thanks for subscribing.</p>}
           </div>
         </div>
       </section>
