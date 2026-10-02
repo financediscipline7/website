@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import React from 'react'
@@ -36,6 +36,9 @@ try {
     ...articles.map(({ slug }) => `/blog/${slug}`),
   ]
   const template = await readFile(path.join(root, 'dist/index.html'), 'utf8')
+  const builtAssets = await readdir(path.join(root, 'dist/assets'))
+  const logoAsset = builtAssets.find((asset) => /^Logo-[\w-]+\.png$/.test(asset))
+  if (!logoAsset) throw new Error('The built Finance Discipline logo asset was not found in dist/assets.')
 
   for (const route of routes) {
     const app = React.createElement(
@@ -52,7 +55,7 @@ try {
       .replace(/<meta\b(?=[^>]*\bdata-rh="true")[^>]*>/g, '')
       .replace(/<link\b(?=[^>]*\brel="canonical")[^>]*>/g, '')
       .replace('</head>', `${headTags}\n</head>`)
-      .replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+      .replace('<div id="root"></div>', `<div id="root">${body.replaceAll('/src/assets/Logo.png', `/assets/${logoAsset}`)}</div>`)
     const outputPath = route === '/'
       ? path.join(root, 'dist/index.html')
       : path.join(root, 'dist', route.slice(1), 'index.html')
@@ -73,7 +76,7 @@ try {
     .replace(/<meta\b(?=[^>]*\bdata-rh="true")[^>]*>/g, '')
     .replace(/<link\b(?=[^>]*\brel="canonical")[^>]*>/g, '')
     .replace('</head>', `${notFoundHead}\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${notFoundBody}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${notFoundBody.replaceAll('/src/assets/Logo.png', `/assets/${logoAsset}`)}</div>`)
   await writeFile(path.join(root, 'dist/404.html'), notFoundHtml)
 
   const urls = [

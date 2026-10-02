@@ -72,7 +72,7 @@ export function ArticleDetailPage() {
     .map((id) => articles.find((candidate) => candidate.id === id))
     .filter((candidate) => candidate !== undefined)
     .slice(0, 3)
-  const nextArticle = articles.find((candidate) => candidate.id !== article.id)
+  const nextArticle = articles.find((candidate) => candidate.id !== article.id && !article.relatedArticles.includes(candidate.id))
   const categoryName = article.category === 'wealth-building'
     ? 'Wealth building'
     : article.category.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join(' ')
