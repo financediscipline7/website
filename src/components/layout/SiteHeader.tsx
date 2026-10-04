@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Logo } from './Logo'
 
-const youtubeChannelUrl = import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@REPLACE_WITH_CHANNEL'
+const youtubeChannelUrl = import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@FinanceDiscipline7'
 const navItems = [['Psychology', '/psychology'], ['Wealth building', '/wealth-building'], ['Money mistakes', '/money-mistakes'], ['Experiments', '/experiments']]
 
 export function SiteHeader() {

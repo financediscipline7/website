@@ -97,6 +97,8 @@
 .main-nav { display: flex; align-items: center; gap: clamp(18px, 2.5vw, 34px); font: 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: #b7c4c7; }.main-nav a { display: inline-flex; align-items: center; gap: 4px; transition: color .2s; }.main-nav a:hover, .text-link:hover { color: var(--cyan); }.nav-newsletter { border: 1px solid var(--cyan); color: var(--cyan); padding: 11px 16px; }.header-actions { display: flex; gap: 15px; align-items: center; }.icon-button, .menu-button { background: none; border: 0; padding: 6px; cursor: pointer; }.menu-button { display: none; }
 .youtube-subscribe { display: inline-flex; align-items: center; gap: 7px; padding: 10px 13px; border: 1px solid var(--cyan); color: var(--cyan); font: 10px var(--mono); text-transform: uppercase; white-space: nowrap; }
 .youtube-subscribe:hover { background: var(--cyan); color: var(--primary-dark); }
+.social-link { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); transition: color var(--transition-normal); }
+.social-link:hover { color: var(--cyan); }
 /* HOMEPAGE LIGHT EDITORIAL REDESIGN */
 
 .hero-section { 

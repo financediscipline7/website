@@ -4,7 +4,8 @@ import { articles } from '../../data/articles'
 
 const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://website-orpin-mu-94.vercel.app').replace(/\/+$/, '')
 const defaultImage = `${siteUrl}/og-default.svg`
-const youtubeChannelUrl = import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@REPLACE_WITH_CHANNEL'
+const youtubeChannelUrl = import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@FinanceDiscipline7'
+const instagramProfileUrl = import.meta.env.VITE_INSTAGRAM_PROFILE_URL || 'https://www.instagram.com/financediscipline7/'
 
 const pageMetadata: Record<string, { title: string; description: string }> = {
   '/': {
@@ -95,6 +96,16 @@ export function SEOHead() {
   const title = page?.title ?? 'Page not found | Finance Discipline'
   const description = page?.description ?? 'The page you requested could not be found on Finance Discipline.'
   const canonicalUrl = `${siteUrl}${pathname}`
+  const articleText = article
+    ? typeof article.content === 'string'
+      ? article.content
+      : article.content.map((block) => {
+          if (block.type === 'list') return block.items.join(' ')
+          if (block.type === 'table') return [...block.headers, ...block.rows.flat()].join(' ')
+          if (block.type === 'callout') return `${block.title} ${block.text}`
+          return block.text
+        }).join(' ')
+    : ''
   const image = article?.featuredImage
     ? new URL(article.featuredImage, `${siteUrl}/`).href
     : defaultImage
@@ -106,6 +117,10 @@ export function SEOHead() {
         description: article.seo.description,
         datePublished: article.publishedAt,
         dateModified: article.updatedAt || article.publishedAt,
+        articleSection: article.category,
+        keywords: article.tags,
+        inLanguage: 'en',
+        wordCount: articleText.trim().split(/\s+/).filter(Boolean).length,
         author: { '@type': 'Organization', name: article.author.name },
         publisher: {
           '@type': 'Organization',
@@ -114,6 +129,7 @@ export function SEOHead() {
           logo: { '@type': 'ImageObject', url: `${siteUrl}/favicon.svg` },
         },
         mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+        url: canonicalUrl,
         image,
       }
     : pathname === '/'
@@ -126,7 +142,7 @@ export function SEOHead() {
               name: 'Finance Discipline',
               url: siteUrl,
               logo: `${siteUrl}/favicon.svg`,
-              sameAs: [youtubeChannelUrl],
+              sameAs: [youtubeChannelUrl, instagramProfileUrl],
             },
             {
               '@type': 'WebSite',

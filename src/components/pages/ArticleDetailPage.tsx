@@ -105,7 +105,7 @@ export function ArticleDetailPage() {
   const hasVideo = article.youtubeVideoId && /^[\w-]{11}$/.test(article.youtubeVideoId)
   const videoUrl = hasVideo
     ? `https://www.youtube.com/watch?v=${article.youtubeVideoId}`
-    : (import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@REPLACE_WITH_CHANNEL')
+    : (import.meta.env.VITE_YOUTUBE_CHANNEL_URL || 'https://www.youtube.com/@FinanceDiscipline7')
   const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://website-orpin-mu-94.vercel.app').replace(/\/+$/, '')
   const shareUrl = encodeURIComponent(`${siteUrl}/blog/${article.slug}`)
 

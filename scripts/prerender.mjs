@@ -87,8 +87,81 @@ try {
     }),
   ].join('')
   await writeFile(path.join(root, 'dist/sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`)
-  await writeFile(path.join(root, 'dist/robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`)
-  console.log(`Pre-rendered ${routes.length} routes and generated sitemap.xml and robots.txt`)
+  const crawlerAgents = [
+    'OAI-SearchBot',
+    'ChatGPT-User',
+    'GPTBot',
+    'Claude-SearchBot',
+    'Claude-User',
+    'ClaudeBot',
+    'PerplexityBot',
+    'Perplexity-User',
+    'Googlebot',
+    'Google-Extended',
+    'Bingbot',
+  ]
+  const crawlerRules = crawlerAgents.map((agent) => `User-agent: ${agent}\nAllow: /`).join('\n\n')
+  await writeFile(path.join(root, 'dist/robots.txt'), `User-agent: *\nAllow: /\n\n${crawlerRules}\n\nSitemap: ${siteUrl}/sitemap.xml\n`)
+
+  const articleMarkdown = (article) => {
+    const body = typeof article.content === 'string'
+      ? article.content
+      : article.content.map((block) => {
+          if (block.type === 'paragraph') return block.text
+          if (block.type === 'heading') return `${'#'.repeat(block.level)} ${block.text}`
+          if (block.type === 'quote') return `> ${block.text}`
+          if (block.type === 'callout') return `### ${block.title}\n\n${block.text}`
+          if (block.type === 'list') return block.items.map((item, index) => `${block.ordered ? `${index + 1}.` : '-'} ${item}`).join('\n')
+          if (block.type === 'table') {
+            const header = `| ${block.headers.join(' | ')} |`
+            const divider = `| ${block.headers.map(() => '---').join(' | ')} |`
+            const rows = block.rows.map((row) => `| ${row.join(' | ')} |`).join('\n')
+            return [header, divider, rows].join('\n')
+          }
+        }).join('\n\n')
+    return [
+      `## ${article.title}`,
+      '',
+      `Canonical URL: ${siteUrl}/blog/${article.slug}`,
+      `Category: ${article.category}`,
+      `Published: ${article.publishedAt}`,
+      `Summary: ${article.excerpt}`,
+      `Key takeaway: ${article.keyTakeaway}`,
+      '',
+      body,
+      '',
+    ].join('\n')
+  }
+  const categoryLinks = [
+    ['Psychology', '/psychology'],
+    ['Wealth Building', '/wealth-building'],
+    ['Money Mistakes', '/money-mistakes'],
+    ['Experiments', '/experiments'],
+  ].map(([name, route]) => `- [${name}](${siteUrl}${route})`).join('\n')
+  const articleLinks = articles.map((article) => `- [${article.title}](${siteUrl}/blog/${article.slug}): ${article.excerpt}`).join('\n')
+  const llmsIndex = [
+    '# Finance Discipline',
+    '',
+    '> Original educational content about money habits, behavioral finance, budgeting, saving, investing psychology, and financial decision-making.',
+    '',
+    'Finance Discipline publishes general financial education. Content is not individualized financial, tax, legal, or investment advice. Investment examples are educational and do not promise results.',
+    '',
+    `Website: ${siteUrl}/`,
+    `Blog index: ${siteUrl}/blog`,
+    `Sitemap: ${siteUrl}/sitemap.xml`,
+    `Full plain-text article collection: ${siteUrl}/llms-full.txt`,
+    '',
+    '## Topics',
+    '',
+    categoryLinks,
+    '',
+    '## Articles',
+    '',
+    articleLinks,
+  ].join('\n')
+  await writeFile(path.join(root, 'dist/llms.txt'), `${llmsIndex}\n`)
+  await writeFile(path.join(root, 'dist/llms-full.txt'), `${llmsIndex}\n\n## Full article text\n\n${articles.map(articleMarkdown).join('\n')}`)
+  console.log(`Pre-rendered ${routes.length} routes and generated sitemap.xml, robots.txt, llms.txt, and llms-full.txt`)
 } finally {
   await vite.close()
 }

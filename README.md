@@ -25,6 +25,12 @@ npm run build
 npm run preview
 ```
 
+## AI search and answer-engine discovery
+
+The production build prerenders public routes and generates `dist/robots.txt`, `dist/sitemap.xml`, `dist/llms.txt`, and `dist/llms-full.txt`. The AI-readable files are generated from the article catalog in `src/data/articles.ts`; update the catalog rather than editing generated copies. Known AI answer/search crawlers are explicitly allowed, and the general robots policy remains open to public pages.
+
+These files and structured metadata can make public content easier for crawlers to discover and parse, but they cannot guarantee indexing, rankings, citations, or inclusion in ChatGPT, Claude, Google, Bing, or other services. `llms.txt` is an emerging convention, not a formal indexing standard. Keep article pages publicly accessible and submit the sitemap through the relevant search-engine webmaster tools.
+
 ## Structure
 
 - `src/components`: reusable layout and content components
