@@ -30,7 +30,9 @@ export function CategoryPage() {
   const location = useLocation()
   const categoryKey = location.pathname.slice(1) as keyof typeof categoryInfo
   const info = categoryInfo[categoryKey]
-  const categoryArticles = articles.filter((a) => a.category === categoryKey)
+  const categoryArticles = articles
+    .filter((a) => a.category === categoryKey)
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 
   if (!info) {
     return (

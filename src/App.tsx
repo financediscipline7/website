@@ -18,6 +18,7 @@ function HomePage() {
   const pillars = [{ icon: Brain, label: 'Psychology', text: 'Understand the forces behind your choices.' }, { icon: ChartNoAxesCombined, label: 'Strategies', text: 'Build systems that work when motivation fades.' }, { icon: Target, label: 'Discipline', text: 'Create habits that compound over time.' }, { icon: CircleDollarSign, label: 'Freedom', text: 'Design a life on your own terms.' }]
   const topics = [{ icon: Brain, title: 'Psychology', copy: 'Explore the hidden biases and mental traps that shape your money choices.', href: '/psychology' }, { icon: ChartNoAxesCombined, title: 'Wealth building', copy: 'Learn the strategies and systems that make long-term growth possible.', href: '/wealth-building' }, { icon: CircleDollarSign, title: 'Money mistakes', copy: 'Real stories about costly decisions and the lessons that save you years.', href: '/money-mistakes' }, { icon: FlaskConical, title: 'Experiments', copy: 'Behavioral finance challenges and real-world tests for your habits.', href: '/experiments' }]
   const featuredArticle = articles[0]
+  const latestArticles = [...articles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3)
   const startHereArticles = ['70-10-10-10-money-rule', 'compound-interest-brain', 'raise-disappears']
     .map((id) => articles.find((article) => article.id === id))
     .filter((article) => article !== undefined)
@@ -28,7 +29,7 @@ function HomePage() {
     
     <section className="featured-story"><div className="site-header__inner" style={{maxWidth: 'var(--max-width)'}}><div className="featured-story__content"><p className="kicker">Featured</p><h2>{featuredArticle.title}</h2><p>{featuredArticle.excerpt}</p><Link className="button button--primary" to={`/blog/${featuredArticle.slug}`}>Read the story <ArrowRight size={16} /></Link></div></div></section>
     
-    <section className="stories-section"><div className="site-header__inner" style={{maxWidth: 'var(--max-width)'}}><div className="section-heading"><div><p className="kicker">From the journal</p><h2>Latest articles</h2></div><Link className="text-link" to="/blog">Read the journal <ArrowRight size={15} /></Link></div><div className="story-grid">{articles.slice(0, 3).map((article) => <ArticleCard key={article.id} article={article} variant="light" />)}</div></div></section>
+    <section className="stories-section"><div className="site-header__inner" style={{maxWidth: 'var(--max-width)'}}><div className="section-heading"><div><p className="kicker">From the journal</p><h2>Latest articles</h2></div><Link className="text-link" to="/blog">Read the journal <ArrowRight size={15} /></Link></div><div className="story-grid">{latestArticles.map((article) => <ArticleCard key={article.id} article={article} variant="light" />)}</div></div></section>
 
     <section className="start-here-section"><div className="site-header__inner" style={{maxWidth: 'var(--max-width)'}}><div className="section-heading"><div><p className="kicker">New to Finance Discipline?</p><h2>Start here.</h2></div></div><div className="story-grid">{startHereArticles.map((article) => <ArticleCard key={article.id} article={article} variant="light" />)}</div></div></section>
     
@@ -46,7 +47,7 @@ function BlogPage() {
     'money-mistakes': 'Money mistakes',
     experiments: 'Experiments',
   }
-  const visibleArticles = articles.filter((article) => {
+  const visibleArticles = [...articles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).filter((article) => {
     const matchesCategory = category === 'all' || article.category === category
     const searchText = `${article.title} ${article.excerpt} ${article.tags.join(' ')}`.toLowerCase()
     return matchesCategory && searchText.includes(query.trim().toLowerCase())
